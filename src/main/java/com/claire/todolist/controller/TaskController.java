@@ -13,7 +13,6 @@ public class TaskController {
             System.out.println("Inizio gestione dei task! Premi 'q' per uscire");
             Scanner scanner = new Scanner(System.in);
             String input;
-            Task task = new Task("Esempio Task", "Descrizione del task", false, "2023-10-01"); 
 
             do { 
 
@@ -23,8 +22,8 @@ public class TaskController {
                 switch (input) {
                     case "1" -> VisualizzaTask();
                     case "2" -> AggiungiTask();
-                    case "3" -> ModificaTask();
-                    case "4" -> EliminaTask();
+                    case "3" -> EliminaTask();
+                    case "4" -> ModificaTask();
                     default -> {
                         if (!input.equals("q")) {
                             System.out.println("Comando non riconosciuto. Riprova.");
@@ -41,12 +40,8 @@ public class TaskController {
 
 
     public void VisualizzaTask() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Visualizzazione dei task che hai per la data di ?");
-        String data = scanner.nextLine();
-        System.out.println("Ecco i task per la data " + data + ":");
         for(Task task : taskList) {
-            if (task.getDate().equals(data)) {
+                System.out.println("ID: " + task.getId());
                 System.out.println("Titolo: " + task.getTitle());
                 System.out.println("Descrizione: " + task.getDescription());
                 System.out.println("Completato: " + (task.getChecked() ? "Sì" : "No"));
@@ -55,7 +50,6 @@ public class TaskController {
             }
         }
         
-    }
 
 
     public void AggiungiTask() {
@@ -69,6 +63,8 @@ public class TaskController {
         String date = scanner.nextLine();
         Task newTask = new Task(title, description, false, date);
         taskList.add(newTask);
+        VisualizzaTask();
+        System.out.println("Task aggiunto con successo!");
 
 
 
@@ -76,17 +72,46 @@ public class TaskController {
 
 
     public void ModificaTask() {
-        // Qui puoi implementare la logica per modificare un task esistente.
-        // Ad esempio, potresti chiedere all'utente di selezionare un task e modificarne i dettagli.
-        System.out.println("Modifica di un task non ancora implementata.");
+        System.out.println("Modifica di un task! Quale Vuoi modificare?");
+        VisualizzaTask();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci l'ID del task da modificare:");
+        int taskId = scanner.nextInt();
+        for (Task task : taskList) {
+            if (task.getId() == taskId) {
+                System.out.println("Lo hai Completato? (true/false):");
+                boolean isChecked = scanner.nextBoolean();
+                scanner.nextLine(); // Consuma il newline rimasto
+                task.setChecked(isChecked);
+                System.out.println("Task modificato con successo!");
+                VisualizzaTask();
+                return;
+            }
+        }
     }
 
 
     public void EliminaTask() {
-        // Qui puoi implementare la logica per eliminare un task esistente.
-        // Ad esempio, potresti chiedere all'utente di selezionare un task da eliminare.
-        System.out.println("Eliminazione di un task non ancora implementata.");
-    }
+        System.out.println("Eliminazione di un task! Quale Vuoi eliminare?");
+        VisualizzaTask();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci l'ID del task da eliminare:");
+        int taskId = scanner.nextInt();
+        scanner.nextLine(); // Consuma il newline rimasto
+        for (Task task : taskList) {
+            if (task.getId() == taskId) {
+                taskList.remove(task);
+                // l'id deve decrescere cosi!
+                for (int i = taskId - 1; i < taskList.size(); i++) {
+                    Task t = taskList.get(i);
+                    t.setId(t.getId() - 1);
+                }
+                System.out.println("Task eliminato con successo!");
+                VisualizzaTask();
+                return;
+            }
+        }
+ }
 
 
 

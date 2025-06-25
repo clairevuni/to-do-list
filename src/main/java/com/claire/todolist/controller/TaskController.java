@@ -1,12 +1,19 @@
 package com.claire.todolist.controller;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import com.claire.todolist.model.Task;
 
 public class TaskController {
     // Qui puoi aggiungere variabili per gestire i task, come una lista di task o un database.
+    private List<Task> taskList = new ArrayList<>();
+
         public void Start() {
             System.out.println("Inizio gestione dei task! Premi 'q' per uscire");
             Scanner scanner = new Scanner(System.in);
             String input;
+            Task task = new Task("Esempio Task", "Descrizione del task", false, "2023-10-01"); 
 
             do { 
 
@@ -34,16 +41,37 @@ public class TaskController {
 
 
     public void VisualizzaTask() {
-        // Qui puoi implementare la logica per visualizzare i task.
-        // Ad esempio, potresti stampare una lista di task esistenti.
-        System.out.println("Visualizzazione dei task non ancora implementata.");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Visualizzazione dei task che hai per la data di ?");
+        String data = scanner.nextLine();
+        System.out.println("Ecco i task per la data " + data + ":");
+        for(Task task : taskList) {
+            if (task.getDate().equals(data)) {
+                System.out.println("Titolo: " + task.getTitle());
+                System.out.println("Descrizione: " + task.getDescription());
+                System.out.println("Completato: " + (task.getChecked() ? "Sì" : "No"));
+                System.out.println("Data: " + task.getDate());
+                System.out.println("-----------------------------");
+            }
+        }
+        
     }
 
 
     public void AggiungiTask() {
-        // Qui puoi implementare la logica per aggiungere un nuovo task.
-        // Ad esempio, potresti chiedere all'utente di inserire i dettagli del task e salvarlo.
-        System.out.println("Aggiunta di un task non ancora implementata.");
+        System.out.println("Aggiungiamo un nuovo task!");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("inserisci il titolo del task:");
+        String title = scanner.nextLine();
+        System.out.println("inserisci la descrizione del task:");
+        String description = scanner.nextLine();
+        System.out.println("inserisci la data del task (formato YYYY-MM-DD):");
+        String date = scanner.nextLine();
+        Task newTask = new Task(title, description, false, date);
+        taskList.add(newTask);
+
+
+
     }
 
 
@@ -61,6 +89,11 @@ public class TaskController {
     }
 
 
+
+    
+    public List<Task> getTaskList() {
+        return taskList;
+    }
     
 
         
